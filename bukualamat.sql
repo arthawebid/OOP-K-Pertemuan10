@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2025 at 04:14 AM
+-- Generation Time: May 31, 2025 at 04:22 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -24,33 +24,43 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mhs`
+-- Table structure for table `datateman`
 --
 
-CREATE TABLE `mhs` (
-  `NIM` varchar(10) NOT NULL,
-  `NAMA` varchar(30) NOT NULL,
-  `JK` enum('L','P') NOT NULL,
-  `PRODI` enum('MTI','SK','BD','KAB') NOT NULL
+CREATE TABLE `datateman` (
+  `namateman` varchar(30) NOT NULL,
+  `alamat` varchar(255) NOT NULL,
+  `telp` varchar(15) NOT NULL,
+  `iddatateman` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `mhs`
+-- Dumping data for table `datateman`
 --
 
-INSERT INTO `mhs` (`NIM`, `NAMA`, `JK`, `PRODI`) VALUES
-('1122334455', 'Andriana Saputra', 'L', 'MTI'),
-('11223355', 'Diah Saputri Wati Dewi', 'P', 'KAB');
+INSERT INTO `datateman` (`namateman`, `alamat`, `telp`, `iddatateman`) VALUES
+('Diah Saputri Wati Dewi', 'Jl. Seroja Barat 20', '0832212453', 1),
+('Andriana Saputra', 'Jl. Nakula Blok J 15', '087889876532', 2);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `mhs`
+-- Indexes for table `datateman`
 --
-ALTER TABLE `mhs`
-  ADD PRIMARY KEY (`NIM`) USING BTREE;
+ALTER TABLE `datateman`
+  ADD PRIMARY KEY (`iddatateman`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `datateman`
+--
+ALTER TABLE `datateman`
+  MODIFY `iddatateman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
