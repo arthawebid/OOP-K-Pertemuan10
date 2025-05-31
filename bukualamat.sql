@@ -31,7 +31,7 @@ CREATE TABLE `datateman` (
   `namateman` varchar(30) NOT NULL,
   `alamat` varchar(255) NOT NULL,
   `telp` varchar(15) NOT NULL,
-  `iddatateman` int(11) NOT NULL
+  `idteman` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -50,7 +50,7 @@ INSERT INTO `datateman` (`namateman`, `alamat`, `telp`, `iddatateman`) VALUES
 -- Indexes for table `datateman`
 --
 ALTER TABLE `datateman`
-  ADD PRIMARY KEY (`iddatateman`);
+  ADD PRIMARY KEY (`idteman`);
 
 --
 -- AUTO_INCREMENT for dumped tables
