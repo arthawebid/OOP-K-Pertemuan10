@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2025 at 04:22 AM
+-- Generation Time: Jun 13, 2025 at 01:18 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -20,7 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `bukualamat`
 --
-
+CREATE Database `bukualamat`;
+USE `bukualamat`;
 -- --------------------------------------------------------
 
 --
@@ -38,7 +39,7 @@ CREATE TABLE `datateman` (
 -- Dumping data for table `datateman`
 --
 
-INSERT INTO `datateman` (`namateman`, `alamat`, `telp`, `iddatateman`) VALUES
+INSERT INTO `datateman` (`namateman`, `alamat`, `telp`, `idteman`) VALUES
 ('Diah Saputri Wati Dewi', 'Jl. Seroja Barat 20', '0832212453', 1),
 ('Andriana Saputra', 'Jl. Nakula Blok J 15', '087889876532', 2);
 
@@ -60,7 +61,7 @@ ALTER TABLE `datateman`
 -- AUTO_INCREMENT for table `datateman`
 --
 ALTER TABLE `datateman`
-  MODIFY `iddatateman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idteman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
