@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -14,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
  * TGL: 24 Mei 2025
  */
 public class frmTeman extends javax.swing.JFrame {
+    String edNama="";
     DefaultTableModel TM = new DefaultTableModel();
 
     /**
@@ -29,19 +31,67 @@ public class frmTeman extends javax.swing.JFrame {
         TM.addColumn("Alamat Teman");
         TM.addColumn("Telp");
               
-        this.dtTemanList();
+        this.dtTemanList();   
+        fieldisEnabled(false);
+        tombolisEnabled(false);
+        cmdTambah.setEnabled(true);
+        cmdTutup.setEnabled(true);
+    }
+    private void fieldisEnabled(boolean opsi){
+        txNAMA.setEditable(opsi);
+        txALAMAT.setEditable(opsi);
+        txTELP.setEditable(opsi);
+    }
+    private void tombolisEnabled(boolean opsi){
+        cmdTambah.setEnabled(opsi);
+        cmdUbah.setEnabled(opsi);
+        cmdHapus.setEnabled(opsi);
+        cmdTutup.setEnabled(opsi);
+    }
+    private void resetForm(){
+        txNAMA.setText("");
+        txALAMAT.setText("");
+        txTELP.setText("");
+    }
+    /*CURD*/
+    /*
+    Menambahkan data baru
+    */
+    private void storeData() throws SQLException{
+        String namateman = txNAMA.getText();
+        String alamat = txALAMAT.getText();
+        String telp = txTELP.getText();
         
         Connection cnn = koneksi();
-        PreparedStatement PS = cnn.prepareStatement("SELECT * FROM datateman;"); 
-        ResultSet RS = PS.executeQuery();
-        
-        while(RS.next()){
-            txNAMA.setText(RS.getString("namateman"));
-        }
-        
-        
+        PreparedStatement PS = cnn.prepareStatement("INSERT INTO datateman(namateman, alamat, telp) VALUES(?,?,?);");
+        PS.setString(1, namateman);
+        PS.setString(2, alamat);
+        PS.setString(3, telp);
+        PS.executeUpdate();
     }
-    
+    /*
+    Mengubah data yang ada
+    */
+    private void updateData() throws SQLException{
+        String namateman = txNAMA.getText();
+        String alamat = txALAMAT.getText();
+        String telp = txTELP.getText();
+        
+        Connection cnn = koneksi();
+        PreparedStatement PS = cnn.prepareStatement("UPDATE datateman SET namateman=?,alamat=?,telp=? WHERE namateman=?;");
+        PS.setString(1, namateman);
+        PS.setString(2, alamat);
+        PS.setString(3, telp);
+        PS.setString(4, this.edNama);
+        PS.executeUpdate();
+    }
+    private void destroyData() throws SQLException{
+        String namateman = txNAMA.getText();
+        Connection cnn = koneksi();
+        PreparedStatement PS = cnn.prepareStatement("DELETE FROM datateman WHERE namateman=?;");
+        PS.setString(1, namateman);
+        PS.executeUpdate();
+    }
     private void dtTemanList() throws SQLException{
         Connection cnn = koneksi();
         
@@ -62,6 +112,8 @@ public class frmTeman extends javax.swing.JFrame {
         }
         
     }
+    /*CURD*/
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -138,6 +190,11 @@ public class frmTeman extends javax.swing.JFrame {
         }
 
         cmdTambah.setText("Tambah");
+        cmdTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdTambahActionPerformed(evt);
+            }
+        });
 
         cmdUbah.setText("Ubah");
         cmdUbah.addActionListener(new java.awt.event.ActionListener() {
@@ -209,7 +266,7 @@ public class frmTeman extends javax.swing.JFrame {
                         .addComponent(txALAMAT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txTELP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -231,20 +288,102 @@ public class frmTeman extends javax.swing.JFrame {
         txALAMAT.setText( TTM.getValueAt(TTM.getSelectedRow(),2).toString() );
         txTELP.setText( TTM.getValueAt(TTM.getSelectedRow(), 3).toString() );
         
-        
+        cmdUbah.setEnabled(true);
+        cmdHapus.setEnabled(true);
     }//GEN-LAST:event_TTMMouseClicked
 
     private void cmdUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdUbahActionPerformed
-        // TODO add your handling code here:
+        if(cmdUbah.getText().equals("Ubah")){
+            cmdUbah.setText("Simpan");
+            cmdTutup.setText("Batal");
+            tombolisEnabled(false);
+            cmdUbah.setEnabled(true);
+            cmdTutup.setEnabled(true);
+            fieldisEnabled(true);
+            this.edNama = txNAMA.getText();
+        }else{
+            try {
+                updateData();
+                dtTemanList();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmTeman.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            cmdUbah.setText("Ubah");
+            cmdTutup.setText("Tutup");
+            cmdTambah.setEnabled(true);
+            cmdHapus.setEnabled(true);
+        }
     }//GEN-LAST:event_cmdUbahActionPerformed
 
     private void cmdHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdHapusActionPerformed
-        // TODO add your handling code here:
+        String isNAMA = txNAMA.getText();
+        int jopsi = JOptionPane.showOptionDialog(this,
+                "Yakin mau menghapus data "+isNAMA+"?", 
+                "Konfirmasi Hapus Data", 
+                JOptionPane.YES_NO_OPTION, 
+                JOptionPane.QUESTION_MESSAGE, 
+                null, null, null);
+        
+        if(jopsi == JOptionPane.YES_OPTION){
+            try {
+                destroyData();
+                dtTemanList();
+                
+                resetForm();
+                cmdUbah.setEnabled(false);
+                cmdHapus.setEnabled(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(frmTeman.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_cmdHapusActionPerformed
 
     private void cmdTutupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdTutupActionPerformed
-        // TODO add your handling code here:
+        
+        if(cmdTutup.getText().equals("Tutup")){
+            int jopsi = JOptionPane.showOptionDialog(this, 
+                    "Yakin akan Menutup Aplikasi?", 
+                    "Konfirmasi Tutup Aplikasi", 
+                    JOptionPane.YES_NO_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE, 
+                    null, null, null);
+            if(jopsi == JOptionPane.YES_OPTION ){
+                System.exit(0);
+            }
+        }else{
+            resetForm();
+            fieldisEnabled(false);
+            cmdTambah.setText("Tambah");
+            cmdTutup.setText("Tutup");
+            cmdUbah.setText("Ubah");
+            cmdTambah.setEnabled(true);
+            cmdUbah.setEnabled(false);
+        }
+        
     }//GEN-LAST:event_cmdTutupActionPerformed
+
+    private void cmdTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdTambahActionPerformed
+        if( cmdTambah.getText().equals("Tambah") ){
+            tombolisEnabled(false);
+            cmdTambah.setText("Simpan");
+            cmdTutup.setText("Batal");
+            cmdTambah.setEnabled(true);
+            cmdTutup.setEnabled(true);
+            resetForm();
+            fieldisEnabled(true);
+        }else{
+            cmdTambah.setText("Tambah");
+            cmdTutup.setText("Tutup");
+            try {
+                storeData();
+                dtTemanList();
+            } catch (SQLException ex) {
+                System.out.print("");
+            }
+            resetForm();
+            fieldisEnabled(false);
+        }
+    }//GEN-LAST:event_cmdTambahActionPerformed
 
     /**
      * @param args the command line arguments
