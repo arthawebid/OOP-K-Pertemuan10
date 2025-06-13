@@ -85,6 +85,9 @@ public class frmTeman extends javax.swing.JFrame {
         PS.setString(4, this.edNama);
         PS.executeUpdate();
     }
+    /*
+    Hapus Data teman
+    */
     private void destroyData() throws SQLException{
         String namateman = txNAMA.getText();
         Connection cnn = koneksi();
